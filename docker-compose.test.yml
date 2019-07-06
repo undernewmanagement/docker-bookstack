@@ -1,4 +1,4 @@
-version: '2'
+version: '2.4'
 services:
   sut:
     build:
@@ -6,6 +6,8 @@ services:
     command: run_tests.sh
     depends_on:
     - bookstack
+    links:
+    - bookstack:bookstack
   mysql:
     image: mysql:5.7.21
     environment:
@@ -17,7 +19,7 @@ services:
     - mysql-data:/var/lib/mysql
 
   bookstack:
-    image: ${BOOKSTACK_IMAGE:-solidnerd/bookstack}
+    image: solidnerd/bookstack:${CACHE_TAG}
     hostname: bookstack
     depends_on:
     - mysql
@@ -36,6 +38,4 @@ volumes:
  mysql-data:
  uploads:
  storage-uploads:
-
-networks:
   
