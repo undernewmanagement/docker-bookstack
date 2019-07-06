@@ -32,6 +32,7 @@ push-release:
 
 e2e: 
 	@BOOKSTACK_IMAGE="$(DOCKER_RELEASE_REG)/${DOCKER_IMAGE_DEV}:${DOCKER_INTERNAL_TAG}" docker-compose -f docker-compose.test.yml up -d
+	@sleep 10
 	@BOOKSTACK_IMAGE="$(DOCKER_RELEASE_REG)/${DOCKER_IMAGE_DEV}:${DOCKER_INTERNAL_TAG}" docker-compose -f docker-compose.test.yml run --rm sut
 	@BOOKSTACK_IMAGE="$(DOCKER_RELEASE_REG)/${DOCKER_IMAGE_DEV}:${DOCKER_INTERNAL_TAG}" docker-compose -f docker-compose.test.yml down -v
 
