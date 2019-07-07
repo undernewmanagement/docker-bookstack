@@ -6,8 +6,8 @@ services:
     command: run_tests.sh
     depends_on:
     - bookstack
-    links:
-    - bookstack:bookstack
+    networks:
+    - frontend
   mysql:
     image: mysql:5.7.21
     environment:
@@ -17,10 +17,10 @@ services:
     - MYSQL_PASSWORD=secret
     volumes:
     - mysql-data:/var/lib/mysql
-
+    networks:
+    - backend
   bookstack:
-    image: solidnerd/bookstack:${CACHE_TAG}
-    hostname: bookstack
+    image: ${BOOKSTACK_IMAGE:-solidnerd/bookstack}
     depends_on:
     - mysql
     environment:
@@ -31,11 +31,18 @@ services:
     volumes:
     - uploads:/var/www/bookstack/public/uploads
     - storage-uploads:/var/www/bookstack/storage/uploads
-    ports:
-    - "8080:80"
+    networks:
+    - frontend
+    - backend
 
 volumes:
  mysql-data:
  uploads:
  storage-uploads:
-  
+
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
